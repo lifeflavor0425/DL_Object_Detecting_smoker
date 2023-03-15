@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Hyperspace by HTML5 UP -->
+	<title>Smoker Video</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="/static/assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="/static/assets/css/noscript.css" />
+	</noscript>
+</head>
+<body class="is-preload"> 
+	<!-- side bar -->
+	{% include 'public/sidebar.html' %}
+    <div id="wrapper">
+
+		<!-- stream -->
+		<section id="intro" class="wrapper style1 fullscreen fade-up">
+			<div class="inner">
+                <img 
+                src="{{ url_for('video_feed') }}" 
+                style="
+                display:inline-block;
+                width:85vw ;
+                max-width:80%;
+                height:80vh ;
+                "
+                >
+			</div>
+		</section>
+    </div>
+    <!-- footer -->
+	{% include 'public/footer.html' %}
+
+	<!-- script -->
+	{% include 'public/script.html' %}
+
+    <script>
+        $('li').remove('')
+        $('#side_ul').append("<li><a href='#intro'>Video</a></li>")
+        day_change = {
+            '0': '일요일',
+            '1': '월요일',
+            '2': '화요일',
+            '3': '수요일',
+            '4': '목요일',
+            '5': '금요일',
+            '6': '일요일'
+        }
+        min_arr = []
+        console.log(document.domain+":"+location.port)
+        socket.on( 'connect', () =>{
+            console.log('연결')
+            })
+        socket.on('get_smoker', (data)=>{
+            date = new Date()
+            console.log(data.img)
+            if (min_arr.indexOf(date.getMinutes()) !== -1) return 
+
+            side_bar = `<li><a href='#${date.getMinutes()}'>result  ${date.getHours()} : ${date.getMinutes()} </a></li>`
+            section_start = `<section id='${date.getMinutes()}' class='wrapper style2 spotlights'>`
+            section_end = "</section>"
+            text = `
+            <section>
+				<a href="#" class="image"><img src="/${data.img}" alt="" data-position="center center"/></a>
+                <div class="content"> 
+                    <ul>
+                        <li>흡연자 감지:  ${data.smoker.filter(value => value.toString() + ',\t')}</li>
+                        <li>날짜   :      ${day_change[date.getDay()]}</li>
+                        <li>시간   :      ${date.getHours()} : ${date.getMinutes()}</li>
+                    </ul>
+                </div>
+            </section>
+            `
+            section_append_text = section_start + text + section_end
+            min_arr.push(date.getMinutes())
+            $('#wrapper').append(section_append_text)
+            $('#side_ul').append(side_bar)
+        })
+    </script>
+</body>
+</html>

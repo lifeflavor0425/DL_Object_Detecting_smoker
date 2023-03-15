@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<!-- Hyperspace by HTML5 UP -->
+	<title>Smoker Detection</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="/static/assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="/static/assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-preload">
+	<!-- side bar -->
+	{% include 'public/sidebar.html' %}
+
+	<div id="wrapper">
+
+		<!-- video -->
+		<section id="intro" class="wrapper style1 fullscreen fade-up">
+			<div class="inner">
+				<img 
+				src="static/recidivist_person_image/13_15_27_41.jpg" 
+				style="
+				display:inline-block;
+				width:85vw ;
+				max-width:80%;
+				height:80vh ;
+				"
+				>
+			</div>
+			<button onclick="dlibStart()">검출</button>
+		</section>
+	</div>
+
+
+	<!-- footer -->
+	{% include 'public/footer.html' %}
+
+	<!-- script -->
+	{% include 'public/script.html' %}
+
+
+	<script>
+		$('li').remove('')
+		$('#side_ul').append("<li><a href='#intro'>recidist</a></li>")
+		day_change = {
+            '0': '일요일',
+            '1': '월요일',
+            '2': '화요일',
+            '3': '수요일',
+            '4': '목요일',
+            '5': '금요일',
+            '6': '일요일'
+        }
+		console.log(document.domain + ":" + location.port)
+		socket.on('connect', () => {
+			console.log('연결')
+		})
+		socket.on('get_result', (data) => {
+			let imgPathArr = data.img
+			imgPathArr.map(path => {
+				date = new Date()
+				let name = path.split("\\")[1]
+
+				side_bar = `<li><a href='#${name}'>result  ${name} </a></li>`
+				section_start = `<section id='${name}' class='wrapper style2 spotlights'>`
+				section_end = "</section>"
+				text = `
+				<section>
+					<a href="#" class="image"><img src="/${path}" alt="" data-position="center center"/></a>
+					<div class="content"> 
+						<ul>
+							<li>흡연자 감지</li>
+							<li>날짜   :      ${day_change[date.getDay()]}</li>
+							<li>시간   :      ${date.getHours()} : ${date.getMinutes()}</li>
+						</ul>
+					</div>
+				</section>
+				`
+				section_append_text = section_start + text + section_end
+				$('#wrapper').append(section_append_text)
+				$('#side_ul').append(side_bar)
+
+			})
+		})
+		function dlibStart(){
+			console.log('click')
+			socket.emit('get_recidivist')
+		}
+	</script>
+</body>
+
+</html>

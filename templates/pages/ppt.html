@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+		<!-- { url_for('static', filename='css/w3.css') }} -->
+		<link rel="stylesheet" href="{{ url_for ('static', filename='pptSet/dist/reset.css')}}">
+		<link rel="stylesheet" href="{{ url_for ('static', filename='pptSet/dist/reveal.css')}}">
+		<link rel="stylesheet" href="{{ url_for ('static', filename='pptSet/dist/theme/black.css')}}">
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="{{ url_for ('static', filename='pptSet/plugin/highlight/monokai.css')}}">
+	</head>
+	<body>
+		<div class="reveal">
+			<!-- {{ url_for ('static', filename='pptSet/slides/슬라이드1.JPG')}} -->
+		  <div class="slides">
+			<section data-background-image="static/pptSet/slides/슬라이드1.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드2.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드3.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드4.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드5.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드6.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드7.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드8.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드9.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드10.JPG"></section>
+			<section data-background-image="static/pptSet/slides/슬라이드11.JPG"></section>
+			<section>
+				<h1>
+					<a href="/">HOME</a>
+				</h1>
+			</section>
+		  </div>
+		</div>
+		<script src="{{ url_for ('static', filename='pptSet/dist/reveal.js')}}"></script>
+		<script>
+		  Reveal.initialize();
+		</script>
+	  </body>
+</html>
