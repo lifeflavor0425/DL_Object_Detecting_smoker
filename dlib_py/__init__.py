@@ -4,16 +4,20 @@ from glob import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
+# 경로 에러 해결용 코드
+os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
+
+# dlib 모델 생성
 detector = dlib.get_frontal_face_detector()
 sp = dlib.shape_predictor("shape_predictor_5_face_landmarks.dat")
 facerec = dlib.face_recognition_model_v1("dlib_face_recognition_resnet_model_v1.dat")
-threshold = 0.5
+# 임계값 설정
+threshold = 0.6
 
-
+# 두 이미지를 한 이미지 안에 삽입
 def plotPairs(img1, img2):
-    fig = plt.figure(figsize=(4,4))
+    fig = plt.figure(figsize=(4, 4))
 
     ax1 = fig.add_subplot(1, 2, 1)
     plt.imshow(img1)
@@ -24,7 +28,7 @@ def plotPairs(img1, img2):
     plt.axis("off")
 
 
-
+# 정확도 계산
 def findEuclideanDistance(source_representation, test_representation):
     euclidean_distance = source_representation - test_representation
     euclidean_distance = np.sum(np.multiply(euclidean_distance, euclidean_distance))
@@ -32,6 +36,7 @@ def findEuclideanDistance(source_representation, test_representation):
     return euclidean_distance
 
 
+# 동일인물인지 비교
 def verify(img1_path, img2_path):
     img1 = dlib.load_rgb_image(img1_path)
     img2 = dlib.load_rgb_image(img2_path)
@@ -40,11 +45,9 @@ def verify(img1_path, img2_path):
 
     if len(img1_detection) == 0:
         return False
-        raise ValueError("no face detected in img1")
 
     if len(img2_detection) == 0:
         return False
-        raise ValueError("no face detected in img2")
 
     img1_shape = sp(img1, img1_detection[0])
     img2_shape = sp(img2, img2_detection[0])
@@ -67,16 +70,12 @@ def verify(img1_path, img2_path):
 
     return verified
 
-
+# 호출 함수 : 두 디렉터리 안에 이미지들 모두 비교 (n * m) 
 def determine(detect_img, detected_img):
     for i in range(len(detected_img)):
         for j in range(len(detect_img)):
-            print(i, j)
             verified = verify(detect_img[j], detected_img[i])
             if verified:
+                print("찾았다!", (i,j))
                 plt.savefig(f"static/dlib_result_image/detection{i, j}.jpg")
-    
-    # plt.close()
-                
-
-
+    plt.close()

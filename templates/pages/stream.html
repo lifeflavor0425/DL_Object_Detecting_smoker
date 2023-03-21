@@ -55,14 +55,15 @@
             })
         socket.on('get_smoker', (data)=>{
             date = new Date()
-            if (min_arr.indexOf(date.getMinutes()) !== -1) return 
+            sec = Math.floor(date.getTime()/1000)
+            if (min_arr.indexOf( sec) !== -1) return 
 
-            side_bar = `<li><a href='#${date.getMinutes()}'>result  ${date.getHours()} : ${date.getMinutes()} </a></li>`
-            section_start = `<section id='${date.getMinutes()}' class='wrapper style2 spotlights'>`
+            side_bar = `<li><a href='#${ sec / 60}'>result  ${date.getHours()} : ${date.getMinutes()} </a></li>`
+            section_start = `<section id='${ sec / 60}' class='wrapper style2 spotlights'>`
             section_end = "</section>"
             text = `
             <section>
-				<a href="#" class="image"><img src="/${data.img}" alt="" data-position="center center"/></a>
+				<a href="#" class="image"><img src="/${data.img}" alt="" data-position="center center" width="416px" height="416px"/></a>
                 <div class="content"> 
                     <ul>
                         <li>흡연자 감지:  ${data.smoker.filter(value => value.toString() + ',\t')}</li>
@@ -73,7 +74,9 @@
             </section>
             `
             section_append_text = section_start + text + section_end
-            min_arr.push(date.getMinutes())
+            if (min_arr.indexOf(Math.floor(date.getTime()/1000)) == -1 ){
+                min_arr.push(Math.floor(date.getTime()/1000))
+            }
             $('#wrapper').append(section_append_text)
             $('#side_ul').append(side_bar)
         })

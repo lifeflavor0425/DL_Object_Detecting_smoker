@@ -1,7 +1,5 @@
 from ultralytics import YOLO
 import cv2
-import numpy as np
-from glob import glob
 import sys
 import time
 
@@ -13,40 +11,22 @@ import time
 #   model.overrides['max_det'] = 100  # maximum number of detections per image
 #   return model
 
-# 라이브 캠
-# results = model.predict(source="0", show=True)
-
-# 테스트 이미지 폴더
-# results = model.predict(source="./test.txt", save=True) # Display preds. Accepts all YOLO predict arguments
-
-# 이미지 확인
-# from PIL
-# im1 = Image.open("./smoke2.jpeg")
-# results = ciga_model.predict(source='./smoke2.jpeg', save=True)  # save plotted images
-
-# 이미지 ndarray 확인
-# from ndarray
-# im2 = cv2.imread("./smoker1.jpeg")
-# results = model.predict(source=im2, save=True, save_txt=True)  # save predictions as labels
-
-# 둘다 확인
-# from list of PIL/ndarray
-# results = model.predict(source=[im1, im2])
-
+# 기본 캠 None 세팅(캠 메모리 해제용)
 live_cam = None
 
-
+# 모델 초기화
 def init():
     ciga_model = YOLO("./models/ciga/ciga_v8s.pt")
-    smoke_model = YOLO("./models/smoke/smoke_m_adam_best.pt")
+    smoke_model = YOLO("./models/smoke/maybe_n_smoke_best.pt")
     person_model = YOLO("./models/person/person_v8s.pt")
     return ciga_model, smoke_model, person_model
 
 
+# stream(캠) 인지 video인지 식별 후 영상 정보 반환
 def get_models(stream=True):
     ciga_model, smoke_model, person_model = init()
-    # , cv2.CAP_DSHOW
     if stream:
+        # 안될 때 -> cv2.CAP_DSHOW
         capture = cv2.VideoCapture(0)
         global live_cam
         live_cam = capture
@@ -54,13 +34,14 @@ def get_models(stream=True):
         if not capture.isOpened():
             sys.exit("카메라 연결 오류")
     else:
-        capture = cv2.VideoCapture("static/video/smoking_me.mp4")
+        capture = cv2.VideoCapture("static/video/video1_AdobeExpress.mp4")
         time.sleep(2)
         if not capture.isOpened():
             sys.exit("동영상 연결 오류")
     return capture, ciga_model, smoke_model, person_model
 
 
+# stream(캠) 메모리 해제
 def cam_close():
     if live_cam.isOpened():
         live_cam.release()
