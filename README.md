@@ -25,7 +25,7 @@
 ![Uploading 스크린샷 2023-06-21 오후 8.47.28.png…]()
 
 # 시스템 구조
-![Uploading 스크린샷 2023-06-21 오후 8.48.57.png…]()
+<img width="626" alt="스크린샷 2023-06-21 오후 8 50 45" src="https://github.com/lifeflavor0425/DL_Object_Detecting_smoker/assets/78671072/1dbd1973-4afa-4c46-8613-c2d34ea1bff8">
 
 # 담당
 - 1. 담배 감지 모델
