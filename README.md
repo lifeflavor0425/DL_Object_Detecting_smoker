@@ -40,4 +40,4 @@
 - 4. 서비스 구현(Front - Back)
 
 # 개발 일정
-![Uploading 스크린샷 2023-06-21 오후 8.38.58.png…]()
+<img width="619" alt="스크린샷 2023-06-21 오후 8 55 31" src="https://github.com/lifeflavor0425/DL_Object_Detecting_smoker/assets/78671072/1ec8698b-8619-42bc-81cd-6822f0a57bc5">
